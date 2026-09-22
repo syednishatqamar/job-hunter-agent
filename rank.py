@@ -4,6 +4,7 @@ import re
 import sqlite3
 import time
 
+import requests
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -27,14 +28,16 @@ KEYWORDS = re.compile(
     r"\b(ai|ml|llm|llms|mlops|machine learning|data scien\w*|python|nlp|genai)\b",
     re.IGNORECASE,
 )
-TARGET_ROLES = "AI Engineer, ML Engineer, MLOps Engineer, Data Scientist, AI/ML roles at any level that fit the resume"
+CANDIDATE_LOCATION = (
+    "Pakistan, open to fully remote roles worldwide, "
+    "not open to relocation or on-site roles outside Pakistan"
+)
+TARGET_ROLES = "AI Engineer, ML Engineer, Data Scientist, AI/ML roles at any level that fit the resume"
 MY_SKILLS = (
-    "Python, pandas, SQL, Machine Learning, Deep Learning, Neural Networks, "
-    "Artificial Intelligence, Generative AI, LLMs, RAG, Agentic AI, MLOps, DevOps, "
-    "C++, scikit-learn, NumPy, PyTorch, TensorFlow, Keras, XGBoost, "
-    "feature engineering, model evaluation, NLP, computer vision, time series, "
-    "Jupyter, Matplotlib, Plotly, Prompt engineering, LangChain, LangGraph, "
-    "LlamaIndex, FastAPI, Flask, REST APIs, computer vision, recommendation systems, edge deployment (Jetson Nano, Raspberry Pi), model optimization, Git, Jupyter"
+    "Python, C++, SQL, PyTorch, TensorFlow, scikit-learn, Federated Learning, NLP, "
+    "computer vision, supervised and unsupervised learning, recommendation systems, "
+    "edge deployment (Jetson Nano, Raspberry Pi), model optimization, Git, Jupyter, "
+    "LangChain, RAG, FastAPI"
 )
 
 RESUME_TEXT = ""
@@ -57,7 +60,7 @@ def clean(html):
 
 
 def score_batch(batch):
-    candidate = f"Target roles: {TARGET_ROLES}\nSkills: {MY_SKILLS}"
+    candidate = f"Target roles: {TARGET_ROLES}\nLocation: {CANDIDATE_LOCATION}\nSkills: {MY_SKILLS}"
     if RESUME_TEXT:
         candidate += f"\n\nResume:\n{RESUME_TEXT}"
 
@@ -76,7 +79,9 @@ Candidate:
 
 {blocks}
 Return exactly one result per job, using the same ref number. For each: fit_score (0-100),
-matched_skills, missing_skills, red_flags, reasoning."""
+matched_skills, missing_skills, red_flags, reasoning.
+If a job requires on-site work somewhere the candidate cannot work from (see Location above),
+treat this as a major red flag and cap fit_score at 20, even if skills match well."""
 
     for model in MODELS:
         for attempt in range(3):
