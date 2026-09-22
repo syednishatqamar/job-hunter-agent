@@ -10,8 +10,6 @@ from google import genai
 from google.genai import types
 from pydantic import BaseModel
 
-from sources import fetch_all
-
 load_dotenv()
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
@@ -161,10 +159,20 @@ if pick > len(todo):
 job_id, title, company, _ = todo[pick - 1]
 print(f"Drafting for: {title} | {company}")
 
-job = next((j for j in fetch_all() if j["id"] == job_id), None)
-if not job:
-    print("That job is no longer in the feed.")
+job_row = db.execute(
+    "SELECT title, company, url, description FROM job_scores WHERE job_id = ?",
+    (job_id,),
+).fetchone()
+if not job_row:
+    print("That job's data is missing from the database. Run rank.py again.")
     raise SystemExit
+
+job = {
+    "title": job_row[0],
+    "company": job_row[1],
+    "url": job_row[2],
+    "description": job_row[3],
+}
 
 print("Writing draft...")
 draft = write_draft(job)

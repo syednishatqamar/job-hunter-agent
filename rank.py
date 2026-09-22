@@ -106,7 +106,7 @@ matched_skills, missing_skills, red_flags, reasoning."""
 db = sqlite3.connect("jobs.db")
 db.execute(
     "CREATE TABLE IF NOT EXISTS job_scores "
-    "(job_id TEXT PRIMARY KEY, source TEXT, title TEXT, company TEXT, url TEXT, data TEXT)"
+    "(job_id TEXT PRIMARY KEY, source TEXT, title TEXT, company TEXT, url TEXT, description TEXT, data TEXT)"
 )
 
 all_jobs = fetch_all()
@@ -132,8 +132,8 @@ for i in range(0, len(new), 5):
         if 1 <= s.ref <= len(batch):
             j = batch[s.ref - 1]
             db.execute(
-                "INSERT OR REPLACE INTO job_scores VALUES (?,?,?,?,?,?)",
-                (j["id"], j["source"], j["title"], j["company"], j["url"], s.model_dump_json()),
+                "INSERT OR REPLACE INTO job_scores VALUES (?,?,?,?,?,?,?)",
+                (j["id"], j["source"], j["title"], j["company"], j["url"], j["description"], s.model_dump_json()),
             )
     db.commit()
     time.sleep(5)
