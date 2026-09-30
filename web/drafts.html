@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drafts — Job Hunter Agent</title>
+<link rel="icon" href="logo-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="/" class="brand-link" aria-label="Job Hunter Agent — Home">
+        <img src="logo-icon.png" alt="">
+        <div>
+          <div class="brand-name">Job Hunter Agent</div>
+          <div class="brand-tag">Career intelligence</div>
+        </div>
+      </a>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+      </button>
+    </div>
+
+    <nav class="nav">
+      <a href="/">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+        Home
+      </a>
+      <a href="/drafts" class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        Drafts
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <h1 style="font-size:1.8rem; margin-bottom:1.4rem;">Proposal drafts</h1>
+    <div id="pending-area"></div>
+
+    <div style="border-top:1px solid var(--line); margin:1.6rem 0;"></div>
+    <h2 style="font-size:1.2rem; margin-bottom:0.9rem;">Approved — cleared to send</h2>
+    <div id="approved-area"></div>
+
+    <h2 style="font-size:1.2rem; margin:1.6rem 0 0.9rem 0;">Rejected</h2>
+    <div id="rejected-area"></div>
+  </main>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="app.js"></script>
+<script>renderDraftsPage();</script>
+</body>
+</html>

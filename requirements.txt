@@ -1,0 +1,8 @@
+  flask
+  gunicorn
+  python-dotenv
+  google-genai
+  pydantic
+  pypdf
+  python-docx
+  requests

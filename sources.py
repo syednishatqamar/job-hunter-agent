@@ -15,6 +15,7 @@ def from_remotive():
             "url": j.get("url", ""),
             "description": j.get("description", ""),
             "tags": j.get("tags", []),
+            "posted_raw": j.get("publication_date", ""),
         }
         for j in r.json()["jobs"]
     ]
@@ -32,6 +33,7 @@ def from_arbeitnow():
             "url": j.get("url", ""),
             "description": j.get("description", ""),
             "tags": j.get("tags", []) + j.get("job_types", []),
+            "posted_raw": j.get("created_at", ""),
         }
         for j in r.json()["data"]
     ]
@@ -40,7 +42,6 @@ def from_arbeitnow():
 def from_remoteok():
     r = requests.get("https://remoteok.com/api", headers=HEADERS, timeout=30)
     r.raise_for_status()
-    # the first item is a legal notice, not a job, so skip anything without "position"
     return [
         {
             "id": f"remoteok-{j['id']}",
@@ -50,6 +51,7 @@ def from_remoteok():
             "url": j.get("url", ""),
             "description": j.get("description", ""),
             "tags": j.get("tags", []),
+            "posted_raw": j.get("date", ""),
         }
         for j in r.json()
         if "position" in j
@@ -70,10 +72,3 @@ def fetch_all():
         except Exception as e:
             print(f"{name}: failed - {str(e)[:100]}")
     return jobs
-
-
-if __name__ == "__main__":
-    all_jobs = fetch_all()
-    print("Total:", len(all_jobs))
-    for j in all_jobs[:3]:
-        print(j["source"], "|", j["title"], "|", j["company"])

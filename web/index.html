@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Job Hunter Agent</title>
+<link rel="icon" href="logo-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="/" class="brand-link" aria-label="Job Hunter Agent — Home">
+        <img src="logo-icon.png" alt="">
+        <div>
+          <div class="brand-name">Job Hunter Agent</div>
+          <div class="brand-tag">Career intelligence</div>
+        </div>
+      </a>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+      </button>
+    </div>
+
+    <nav class="nav">
+      <a href="/" class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+        Home
+      </a>
+      <a href="/drafts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        Drafts
+      </a>
+    </nav>
+
+    <div class="field">
+      <label for="cv-input">CV</label>
+      <div class="upload-zone" id="upload-zone" tabindex="0" role="button" aria-label="Upload your CV">
+        <div id="upload-label">
+          <div class="hint">Click to choose a file</div>
+          <div class="hint">PDF, DOCX, TXT, MD</div>
+        </div>
+      </div>
+      <input type="file" id="cv-input" accept=".pdf,.docx,.txt,.md" style="display:none;">
+    </div>
+
+    <div class="field">
+      <label for="role-input">Target role</label>
+      <input type="text" id="role-input" placeholder="e.g. Cybersecurity Analyst" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label for="location-input">Location and work eligibility</label>
+      <input type="text" id="location-input" value="Pakistan, open to fully remote roles worldwide, not open to relocation" autocomplete="off">
+    </div>
+
+    <button class="btn" id="search-btn">Find matching roles</button>
+    <div id="search-alert"></div>
+    <div id="search-spinner" style="display:none;" class="spinner-text"><span class="spinner-dot"></span><span id="spinner-msg">Working...</span></div>
+
+    <div id="filters-block" style="display:none;">
+      <div style="border-top:1px solid var(--line); margin:1.3rem 0;"></div>
+
+      <div class="filter-group">
+        <label>Minimum fit score — <span class="mono" id="score-val">0</span></label>
+        <div class="slider-row"><input type="range" id="score-slider" min="0" max="100" value="0" step="5"></div>
+      </div>
+
+      <div class="filter-group">
+        <label>Experience level</label>
+        <div class="chip-row" id="level-chips"></div>
+      </div>
+
+      <div class="filter-group">
+        <label>Job source</label>
+        <div class="chip-row" id="source-chips"></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="masthead">
+      <h1>Find the <span class="accent">right role</span> for your <span class="accent-violet">CV</span>.</h1>
+      <p>Upload a CV, name the role you're after, and get ranked openings, honest fit scores, and courses that would actually strengthen your application.</p>
+    </div>
+
+    <div id="tip-ticker-area"></div>
+
+    <div id="results-area">
+      <div class="empty-state">No roles scored yet. Fill in the candidate profile on the left and select <b>Find matching roles</b>.</div>
+    </div>
+
+    <div id="courses-area"></div>
+  </main>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
